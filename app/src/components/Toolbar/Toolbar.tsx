@@ -3,6 +3,8 @@ import React from 'react';
 
 // components
 import More from 'components/More/More';
+import Toggles from 'components/Toggle/Toggles';
+import ThemeSelect from 'components/ThemeSelect/ThemeSelect';
 
 // utils
 import {Logo} from 'Icons';
@@ -19,26 +21,32 @@ type PropType = {
   colours: string[];
   isMoreOpen: boolean;
   isSmallScreenSize: boolean;
-  ThemeSelectContainer: () => JSX.Element;
-  Toggles: () => JSX.Element;
 };
 
-const Toolbar = (props: PropType) => {
-  const {ThemeSelectContainer, Toggles} = props;
+const Toolbar = (props: PropType): JSX.Element => {
   return (
     <section className={css.container}>
       <a href="/themes" className={css.title}>
-        <Logo size="48px" colours={props.colours} />
+        <Logo size="48px" colours={props.colours} className={css.logo} />
         <h1>Windows Terminal Themes</h1>
       </a>
       {!props.isSmallScreenSize && (
         <div className={css.select}>
-          <ThemeSelectContainer />
+          <ThemeSelect
+            themeNames={props.themeNames}
+            dispatch={props.dispatch}
+            activeTheme={props.activeTheme}
+            themeselectRef={props.themeselectRef}
+          />
         </div>
       )}
       {!props.isSmallScreenSize && (
         <div className={css.toggles}>
-          <Toggles />
+          <Toggles
+            themeShade={props.themeShade}
+            previewType={props.previewType}
+            dispatch={props.dispatch}
+          />
         </div>
       )}
       <div className={css.more}>

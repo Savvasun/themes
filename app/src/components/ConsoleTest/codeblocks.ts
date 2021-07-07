@@ -88,7 +88,7 @@ Watch Usage: Press w to show more.
 
     `,
     defaultColour: 'foreground',
-  },
+  }
 ];
 
 export default codeblocks;

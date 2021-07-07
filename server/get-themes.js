@@ -2,8 +2,9 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 const got = require('got');
 const fs = require('fs');
-const customSchemaJson = 'require("../src/custom-colour-schemes.json")';
 const contrast = require('get-contrast');
+const credits = fs.readFile("app\\src\\components\\Credits\\namesAndThemes.json");
+const creditsJSON = credits.parse();
 
 // whatever this mess means
 if (process.env.CI !== true) {
@@ -22,15 +23,21 @@ const baseUrl =
   'https://api.github.com/repos/mbadolato/iTerm2-Color-Schemes/contents/windowsterminal/';
 // this will always get the freshest committed custom schemes
 const customSchemesUrl =
-  'https://api.github.com/repos/atomcorp/themes/contents/src/custom-colour-schemes.json';
-const devCustomSchemesUrl = 'http://localhost:3000/custom-colour-schemes.json';
+  'https://api.github.com/repos/atomcorp/themes/contents/app/src/custom-colour-schemes.json';
+// const devCustomSchemesUrl = 'http://localhost:3000/custom-colour-schemes.json';
 
 // add boolean whether the theme is a light or dark
-const assignColourType = (themes) => {
+const assignExtras = (themes) => {
   return themes.map((theme) => {
+    for (var i = 0; i < creditsJSON.credits.length; i++){
+      if (creditsJSON.credits[i].name == theme.name){
+        var Credit = creditsJSON.credits[i].note; 
+      }
+    }
     return {
       ...theme,
       isDark: contrast.ratio(theme.background, '#000') < 8,
+      credit: Credit
     };
   });
 };
